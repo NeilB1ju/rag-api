@@ -59,7 +59,12 @@ def get_vector_store(pdf_id):
 def ask_pdf_post(pdf_id):
     json_content = request.json
     print(f"Received request for PDF ID: {pdf_id}")
+    print(f"Request content: {json_content}")  # Log request content for debugging
+
     query = json_content.get("query")
+    
+    if query is None:
+        return jsonify({"error": "The 'query' field is required"}), 400  # Return error if 'query' is missing
     
     vector_store = get_vector_store(pdf_id)
     if vector_store is None:
